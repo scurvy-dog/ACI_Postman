@@ -1,0 +1,759 @@
+{
+	"variables": [],
+	"info": {
+		"name": "BasicAPIC",
+		"_postman_id": "2f02f67c-a58b-9272-b631-b33e9b2cdcc7",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "APIC Configuration",
+			"description": "",
+			"item": [
+				{
+					"name": "Create ANP with 3tier app",
+					"request": {
+						"url": "https://{{URL}}/api/mo/uni/tn-{{TENANTNAME}}.xml",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<fvTenant name=\"{{TENANTNAME}}\">\n\n    <fvAp name=\"OnlineStore\">\n        <fvAEPg name=\"web\">\n            <fvRsBd tnFvBDName=\"bd1\"/>\n            <fvRsCons tnVzBrCPName=\"rmi\"/>\n            <fvRsProv tnVzBrCPName=\"web\"/>\n            <fvRsDomAtt tDn=\"uni/vmmp-VMware/dom-datacenter\"/>\n        </fvAEPg>\n\n        <fvAEPg name=\"db\">\n            <fvRsBd tnFvBDName=\"bd1\"/>\n            <fvRsProv tnVzBrCPName=\"sql\"/>\n            <fvRsDomAtt tDn=\"uni/vmmp-VMware/dom-datacenter\"/>\n        </fvAEPg>\n\n        <fvAEPg name=\"app\">\n            <fvRsBd tnFvBDName=\"bd1\"/>\n            <fvRsProv tnVzBrCPName=\"rmi\"/>\n            <fvRsCons tnVzBrCPName=\"sql\"/>\n            <fvRsDomAtt tDn=\"uni/vmmp-VMware/dom-datacenter\"/>\n        </fvAEPg>\n    </fvAp>\n    \n    <vzFilter name=\"http\" >\n        <vzEntry dFromPort=\"80\" name=\"DPort-80\" prot=\"tcp\" etherT=\"ip\" />\n        <vzEntry dFromPort=\"443\" name=\"DPort-443\" prot=\"tcp\" etherT=\"ip\" />\n    </vzFilter>\n    \n    <vzFilter name=\"rmi\" >\n        <vzEntry dFromPort=\"1099\" name=\"DPort-1099\" prot=\"tcp\" etherT=\"ip\" />\n    </vzFilter>\n    \n    <vzFilter name=\"sql\">\n        <vzEntry dFromPort=\"1521\" name=\"DPort-1521\" prot=\"tcp\" etherT=\"ip\" />\n    </vzFilter>\n    \n    <vzBrCP name=\"web\">\n        <vzSubj name=\"web\">\n            <vzRsSubjFiltAtt tnVzFilterName=\"http\"/>\n        </vzSubj>\n    </vzBrCP>\n\n    <vzBrCP name=\"rmi\">\n        <vzSubj name=\"rmi\">\n            <vzRsSubjFiltAtt tnVzFilterName=\"rmi\"/>\n        </vzSubj>\n    </vzBrCP>\n\n    <vzBrCP name=\"sql\">\n        <vzSubj name=\"sql\">\n           <vzRsSubjFiltAtt tnVzFilterName=\"sql\"/>\n        </vzSubj>\n    </vzBrCP>    \n</fvTenant>"
+						},
+						"description": "Edit data below with app details"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Tenant",
+					"request": {
+						"url": "https://{{URL}}/api/mo/uni/tn-{{TENANTNAME}}.xml",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add a User",
+					"request": {
+						"url": "https://{{URL}}/api/mo/uni/userext/user-georgewa.json",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aaaUser\" : {\n    \"attributes\" : {\n      \"pwd\" : \"password1\",\n      \"firstName\" : \"George\"\n      \"lastName\" : \"Washington\",\n      \"phone\" : \"4085551212\",\n      \"email\" : \"georgewa@example.com\"\n    },\n    \"children\" : [{\n        \"aaaUserDomain\" : {\n          \"attributes\" : {\n            \"name\" : \"ExampleCorp\"\n          },\n          \"children\" : [{\n              \"aaaUserRole\" : {\n                \"attributes\" : {\n                  \"name\" : \"admin\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": "Edit the username in the URL. Example replace georgewa with \nuser to add"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a User",
+					"request": {
+						"url": "https://{{URL}}/api/mo/uni/userext/user-georgewa.json",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Edit the username in the URL. Example replace georgewa with \nuser to delete"
+					},
+					"response": []
+				},
+				{
+					"name": "Create syslog",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/fabric/slgroup-{{SYSLOGNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"syslogGroup\": {\n    \"attributes\": {\n      \"dn\": \"uni/fabric/slgroup-{{SYSLOGNAME}}\",\n      \"name\": \"{{SYSLOGNAME}}\",\n      \"rn\": \"slgroup-{{SYSLOGNAME}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"syslogConsole\": {\n          \"attributes\": {\n            \"dn\": \"uni/fabric/slgroup-{{SYSLOGNAME}}/console\",\n            \"rn\": \"console\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"syslogFile\": {\n          \"attributes\": {\n            \"dn\": \"uni/fabric/slgroup-{{SYSLOGNAME}}/file\",\n            \"rn\": \"file\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"syslogProf\": {\n          \"attributes\": {\n            \"dn\": \"uni/fabric/slgroup-{{SYSLOGNAME}}/prof\",\n            \"rn\": \"prof\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"syslogRemoteDest\": {\n          \"attributes\": {\n            \"dn\": \"uni/fabric/slgroup-{{SYSLOGNAME}}/rdst-10.1.1.1\",\n            \"host\": \"10.1.1.1\",\n            \"name\": \"syslogServer\",\n            \"rn\": \"rdst-{{SYSLOGDEST}}\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"fileRsARemoteHostToEpg\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/tn-mgmt/mgmtp-default/oob-default\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Bridge Domain and tie with Private Net",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"fvTenant\":{\"attributes\":{\"dn\":\"uni/tn-{{TENANTNAME}}\",\"status\":\"modified\"},\n\"children\":[{\"fvBD\":{\"attributes\":{\"dn\":\"uni/tn-{{TENANTNAME}}/BD-{{BDNAME}}\",\"mac\":\"00:22:BD:F8:19:FF\",\"name\":\"{{BDNAME}}\",\"rn\":\"BD-{{BDNAME}}\",\"status\":\"created\"},\n\"children\":[{\"fvRsCtx\":{\"attributes\":{\"tnFvCtxName\":\"{{PNETNAME}}\",\"status\":\"created,modified\"},\n\"children\":[]}},{\"fvSubnet\":{\"attributes\":\n    {\"dn\":\"uni/tn-{{TENANTNAME}}/BD-{{BDNAME}}/subnet-[10.100.2.1/24]\",\"ip\":\"10.100.2.1/24\",\"rn\":\"subnet-[10.100.2.1/24]\",\"status\":\"created\"},\"\nchildren\":[]}}]}},{\"fvCtx\":{\"attributes\":{\"dn\":\"uni/tn-{{TENANTNAME}}/ctx-{{PNETNAME}}\",\"name\":\"{{PNETNAME}}\",\"rn\":\"ctx-{{PNETNAME}}\",\"status\":\"created\"},\"children\":[]}}]}}"
+						},
+						"description": "Requires Basic login\nRequires variables set in Environment \nChange line 5 with your IP address settings.  "
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Tenant",
+					"request": {
+						"url": " https://{{URL}}/api/mo/uni.xml",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<fvTenant name=\"{{TENANTNAME}}\"/>"
+						},
+						"description": "Basic login"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Taboo Contract",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vzTaboo\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANTNAME}}/taboo-{{TABCONTRACT}}\",\n      \"name\": \"{{TABCONTRACT}}\",\n      \"rn\": \"taboo-{{TABCONTRACT}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"vzTSubj\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANTNAME}}/taboo-{{TABCONTRACT}}/tsubj-{{SUBJECT}}\",\n            \"name\": \"{{SUBJECT}}\",\n            \"rn\": \"tsubj-{{SUBJECT}}\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"vzRsDenyRule\": {\n                \"attributes\": {\n                  \"tnVzFilterName\": \"http\",\n                  \"directives\": \"none,log\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": "Requires Basic login\nRequires environment varibles \nChange line for specific subject\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a  Contract",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/brc-test123.json",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Requires Basic login....\nEdit URL to use....\nEXAMPLE provided is test123...\nMake sure to just change the contract name!  \nexample is brc-test123.json\n\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a  Contract",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vzBrCP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANTNAME}}/brc-{{CONTRACT}}\",\n      \"name\": \"{{CONTRACT}}\",\n      \"scope\": \"tenant\",\n      \"rn\": \"{{CONTRACT}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"vzSubj\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANTNAME}}/brc-{{CONTRACT}}/subj-testsub\",\n            \"name\": \"testsub\",\n            \"rn\": \"subj-testsub\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": "Requires Basic login\nRequires environment varibles URL, TENANTNAME, and CONTRACT\nAlso builds a subject labeled testsub.\nTestsub should be changed to your subject name\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a  Filter",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}/flt-{{FILTER}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vzFilter\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANTNAME}}/flt-{{FILTER}}\",\n      \"name\": \"{{FILTER}}\",\n      \"rn\": \"flt-{{FILTER}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"vzEntry\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANTNAME}}/flt-{{FILTER}}/e-other123\",\n            \"name\": \"other123\",\n            \"etherT\": \"ip\",\n            \"prot\": \"tcp\",\n            \"sFromPort\": \"http\",\n            \"sToPort\": \"http\",\n            \"rn\": \"e-other123\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": "Requires Basic login...\nRequires environment varibles URL, TENANTNAME, and FILTER...\nBuild a access list called other123 for TCP source http to any\nEdit line 3 as required.\n\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create an EPG and associate with phy port",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvAEPg\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANTNAME}}/ap-{{ANPNAME}}/epg-{{EPGNAME}}\",\n      \"name\": \"{{EPGNAME}}\",\n      \"rn\": \"epg-{{EPGNAME}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"fvCrtrn\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANTNAME}}/ap-{{ANPNAME}}/epg-{{EPGNAME}}/crtrn\",\n            \"name\": \"default\",\n            \"rn\": \"crtrn\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"fvRsBd\": {\n          \"attributes\": {\n            \"tnFvBDName\": \"{{BDNAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"fvRsDomAtt\": {\n          \"attributes\": {\n            \"tDn\": \"uni/phys-phys\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"fvRsNodeAtt\": {\n          \"attributes\": {\n            \"tDn\": \"topology/pod-1/node-101\",\n            \"encap\": \"vlan-100\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Associate EPG with contract",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}/ap-{{ANPNAME}}/epg-{{EPGNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvRsProv\": {\n    \"attributes\": {\n      \"tnVzBrCPName\": \"{{CONTRACT}}\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "APIC_Configuration_Networking",
+			"description": "",
+			"item": [
+				{
+					"name": "Create a Private Network",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}/ctx-{{PNETNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvCtx\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANTNAME}}/ctx-{{PNETNAME}}\",\n      \"name\": \"{{PNETNAME}}\",\n      \"rn\": \"{{PNETNAME}}\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"description": "Requires Basic login"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Bridge Domain and Private Net",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvTenant\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANTNAME}}\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"fvBD\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANTNAME}}/BD-{{BDNAME}}\",\n            \"mac\": \"00:22:BD:F8:19:FF\",\n            \"name\": \"{{BDNAME}}\",\n            \"rn\": \"BD-{{BDNAME}}\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"fvRsCtx\": {\n                \"attributes\": {\n                  \"tnFvCtxName\": \"{{BDNAME}}\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            },\n            {\n              \"fvSubnet\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-{{TENANTNAME}}/BD-{{BDNAME}}/subnet-[10.100.2.1/24]\",\n                  \"ip\": \"10.100.2.1/24\",\n                  \"rn\": \"subnet-[10.100.2.1/24]\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"fvCtx\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANTNAME}}/ctx-{{BDNAME}}\",\n            \"name\": \"{{BDNAME}}\",\n            \"rn\": \"ctx-{{BDNAME}}\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": "Requires Basic login.\nRequires varibales in environment.\nChange IP addresses in line 5"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Layer3 Out",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l3extOut\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANTNAME}}/out-{{ROUTEOUT}}\",\n      \"name\": \"{{ROUTEOUT}}\",\n      \"rn\": \"out-{{ROUTEOUT}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"ospfExtP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANTNAME}}/out-{{ROUTEOUT}}/ospfExtP\",\n            \"areaId\": \"50\",\n            \"areaType\": \"regular\",\n            \"rn\": \"ospfExtP\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"l3extRsEctx\": {\n          \"attributes\": {\n            \"tnFvCtxName\": \"{{BDNAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"l3extRsL3DomAtt\": {\n          \"attributes\": {\n            \"tDn\": \"uni/l3dom-l3out\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}\n\n"
+						},
+						"description": "Requires Basic login.\nRequires varibales in environment.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Associate l3 out with bridge domain",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/tn-{{TENANTNAME}}/BD-{{BDNAME}}.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"fvRsBDToOut\":{\"attributes\":{\"tnL3extOutName\":\"{{ROUTEOUT}}\",\"status\":\"created\"},\"children\":[]}}\n\n"
+						},
+						"description": "Requires Basic login.\nRequires varibales in environment.\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "APIC_VMM_Configuration",
+			"description": "",
+			"item": [
+				{
+					"name": "Create a Vlan Pool",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/vlanns-[{{VLANPOOL}}]-dynamic\",\n      \"name\": \"{{VLANPOOL}}\",\n      \"rn\": \"vlanns-[{{VLANPOOL}}]-dynamic\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/vlanns-[{{VLANPOOL}}]-dynamic/from-[vlan-{{VLANPOOLSTART}}]-to-[vlan-{{VLANPOOLSTOP}}]\",\n            \"from\": \"vlan-{{VLANPOOLSTART}}\",\n            \"to\": \"vlan-{{VLANPOOLSTOP}}\",\n            \"allocMode\": \"dynamic\",\n            \"rn\": \"from-[vlan-{{VLANPOOLSTART}}]-to-[vlan-{{VLANPOOLSTOP}}]\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": "Requires URL VLANPOOL (name) \nVLANPOOLSTART (vlan number) VLANPOOLSTOP (vlan number)\nBuilds a dynamic pool\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Add a vCenter",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vmmDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/vmmp-VMware/dom-{{VMDOMAIN}}\",\n      \"name\": \"{{VMDOMAIN}}\",\n      \"rn\": \"dom-{{VMDOMAIN}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-[{{VLANPOOL}}]-dynamic\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"vmmUsrAccP\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMDOMAIN}}/usracc-{{VMUSER}}\",\n            \"name\": \"{{VMUSER}}\",\n            \"usr\": \"{{VMUSER}}\",\n            \"pwd\": \"{{VMPASS}}\",\n            \"rn\": \"usracc-{{VMUSER}}\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": "Requires URL, VMDOMAIN, VMUSER, VMPASS, and VLANPOOL\nCreate a vlan pool first.\n\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login - Do this first",
+			"description": "",
+			"item": [
+				{
+					"name": "Basic login",
+					"request": {
+						"url": " https://{{URL}}/api/aaaLogin.xml",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<aaaUser name=\"{{USERNAME}}\" pwd=\"{{PASSWORD}}\" />"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Basic login JSON",
+					"request": {
+						"url": " https://{{URL}}/api/aaaLogin.json",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "show commands",
+			"description": "",
+			"item": [
+				{
+					"name": "Unreachable Nodes",
+					"request": {
+						"url": "https://{{URL}}/api/node/class/fabricLooseNode.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Unmanaged Nodes",
+					"request": {
+						"url": "https://{{URL}}/api/node/class/fabricLooseNode.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Fabric Membership",
+					"request": {
+						"url": "https://{{URL}}/api/node/class/topSystem.json?query-target=subtree&target-subtree-class=firmwareCtrlrRunning",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Cluster Health",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/topology/pod-1/node-1/av.json?query-target=children&target-subtree-class=infraWiNode",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Overall Fabric Health",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/topology/HDfabricOverallHealth5min-0.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Fault Sumary",
+					"request": {
+						"url": "https://{{URL}}/api/node/class/faultSummary.json?order-by=faultSummary.severity|desc&page=0&page-size=15",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Query a Node",
+					"request": {
+						"url": " https://{{URL}}//api/node/mo/topology/pod-1/node-103.json?query-target=self&rsp-subtree-include=health",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Show installed device packages",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/infra.json?query-target=subtree&target-subtree-class=vnsMDev",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Tenant Details",
+					"request": {
+						"url": "https://{{URL}}/api/mo/uni/tn-{{TENANTNAME}}.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Tenant Fault Counts",
+					"request": {
+						"url": "https://{{URL}}/api/mo/uni/tn-{{TENANTNAME}}/fltCnts.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Tenant Health",
+					"request": {
+						"url": "https://{{URL}}/api/mo/uni/tn-{{TENANTNAME}}/health.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "All Top Level elements ",
+					"request": {
+						"url": "https://{{URL}}/api/class/topSystem.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Show APIC Version",
+					"request": {
+						"url": "https://{{URL}}/api/node/class/fabricNode.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Show Proc on APIC",
+					"request": {
+						"url": "https://{{URL}}/api/node/class/topology/pod-1/node-1/procEntry.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Show all Tenants",
+					"request": {
+						"url": "https://{{URL}}/api/class/fvTenant.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "List Child Objects in Tenants",
+					"request": {
+						"url": "https://{{URL}}/api/class/fvTenant.json?query-target=children",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Show Bridge Domains",
+					"request": {
+						"url": "https://{{URL}}/api/class/fvTenant.json?query-target=subtree&target-subtree-class=fvBD",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "List non-default tenants",
+					"request": {
+						"url": "https://{{URL}}/api/class/fvTenant.json?query-target-filter=and(ne(fvTenant.name,\"common\"),ne(fvTenant.name,\"infra\"),ne(fvTenant.name,\"mgmt\"))",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "List all bridge domains with health",
+					"request": {
+						"url": "https://{{URL}}/api/mo/uni/tn-{{TENANTNAME}}.json?query-target=subtree&target-subtree-class=fvBD&rsp-subtree-include=health",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Show Global End Points",
+					"request": {
+						"url": "https://{{URL}}/api/node/class/fvCEp.json?rsp-subtree=children&order-by=fvCEp.mac|asc&page=0&page-size=15",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

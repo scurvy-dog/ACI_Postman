@@ -1,0 +1,733 @@
+{
+	"variables": [],
+	"info": {
+		"name": "APIC Setup",
+		"_postman_id": "81cf913d-6444-5ee0-4a54-cadf8b937365",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1 - NTP Setup",
+			"description": "",
+			"item": [
+				{
+					"name": "Set NTP Policy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"var ntpValue = postman.getEnvironmentVariable(\"NTP1\");",
+									"",
+									"if (responseCode.code === 200) {",
+									"    if (ntpValue === \"\") {",
+									"        postman.setNextRequest(\"Set NTP Pod Policy Group\");",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/fabric/time-NTP-Policy.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"imdata\": [\n        {\n            \"datetimePol\": {\n                \"attributes\": {\n                    \"adminSt\": \"enabled\",\n                    \"authSt\": \"disabled\",\n                    \"descr\": \"\",\n                    \"dn\": \"uni/fabric/time-NTP-Policy\",\n                    \"name\": \"NTP-Policy\",\n                    \"ownerKey\": \"\",\n                    \"ownerTag\": \"\"\n                },\n                \"children\": []\n            }\n        }\n    ],\n}"
+						},
+						"description": "Variables NTP = server IP"
+					},
+					"response": [
+						{
+							"id": "bf09068b-0ada-4268-adfc-a7924ff0756d",
+							"name": "Set-NTP-Policy",
+							"originalRequest": {
+								"url": "https://{{URL}}/api/node/mo/uni/fabric/time-NTP-Policy.json",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"imdata\": [\n        {\n            \"datetimePol\": {\n                \"attributes\": {\n                    \"adminSt\": \"enabled\",\n                    \"authSt\": \"disabled\",\n                    \"descr\": \"\",\n                    \"dn\": \"uni/fabric/time-NTP-Policy\",\n                    \"name\": \"NTP-Policy\",\n                    \"ownerKey\": \"\",\n                    \"ownerTag\": \"\"\n                },\n                \"children\": []\n            }\n        }\n    ],\n}"
+								},
+								"description": "Variables NTP = server IP"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Origin, X-Requested-With, Content-Type, Accept, devcookie, APIC-challenge",
+									"name": "Access-Control-Allow-Headers",
+									"description": ""
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST,GET,OPTIONS,DELETE",
+									"name": "Access-Control-Allow-Methods",
+									"description": ""
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://127.0.0.1:8000",
+									"name": "Access-Control-Allow-Origin",
+									"description": ""
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store",
+									"name": "Cache-Control",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": ""
+								},
+								{
+									"key": "Content-Length",
+									"value": "70",
+									"name": "Content-Length",
+									"description": ""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/xml",
+									"name": "Content-Type",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 19 Oct 2016 20:24:55 GMT",
+									"name": "Date",
+									"description": ""
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache",
+									"name": "Pragma",
+									"description": ""
+								},
+								{
+									"key": "Server",
+									"value": "-/-",
+									"name": "Server",
+									"description": ""
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubdomains",
+									"name": "Strict-Transport-Security",
+									"description": ""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN",
+									"name": "X-Frame-Options",
+									"description": ""
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Mon Jan 18 2038 22:14:07 GMT-0800 (PST)",
+									"httpOnly": true,
+									"domain": "10.93.152.5",
+									"path": "/",
+									"secure": true,
+									"value": "q0SVpHl3mnb5vMHDtCyuqpeRe4HgJu1BOVVCifOc5ahA5LXc6xzpa4fqxCJhkN6uEg887cwEnu6CqX2QK8MZm/0GLlIhLeku5ydYqMrFT6MYVn1tcTN5t44G5y5KlCOirkkWkx/HQGipOR4LjqpEPwJNGSl1nVSxGjGL2TbqBEyDJSvtouFhtP957essDq03/oxvkkcyJTeW9FFFYrdAYoeT5xFD3DizNIEfj6mZTtCHzF8CRNWC1Oim9PlmFQh0i5lJ0/aINH7e44h66cUukF2v25nhq+C9U74CHDoMQLuU47MvJg8pcVO88mXRVBzxbCEIyW64Zx3Z+mXkdPvZMDkDB4obvqKHooQWNau0+R6bLQAHoRV8HH+zaPkte111",
+									"key": "APIC-cookie"
+								}
+							],
+							"responseTime": "95",
+							"body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><imdata totalCount=\"0\"></imdata>"
+						}
+					]
+				},
+				{
+					"name": "Set NTP Server 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"var ntpValue = postman.getEnvironmentVariable(\"NTP2\");",
+									"",
+									"if (responseCode.code === 200) {",
+									"    if (ntpValue === \"\") {",
+									"        postman.setNextRequest(\"Set NTP Pod Policy Group\");",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/fabric/time-NTP-Policy.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"datetimeNtpProv\": {\n    \"attributes\": {\n      \"descr\": \"\",\n            \"keyId\": \"0\",\n            \"maxPoll\": \"6\",\n            \"minPoll\": \"4\",\n            \"name\": \"{{NTP1}}\",\n            \"preferred\": \"yes\"\n        },\n    \"children\": [\n         {\n        \"datetimeRsNtpProvToEpg\": {\n            \"attributes\": {\n                \"tDn\": \"uni/tn-mgmt/mgmtp-default/oob-default\"\n                          }\n            }\n        }\n        ]\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Set NTP Server 2",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/fabric/time-NTP-Policy.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"datetimeNtpProv\": {\n    \"attributes\": {\n      \"descr\": \"\",\n            \"keyId\": \"0\",\n            \"maxPoll\": \"6\",\n            \"minPoll\": \"4\",\n            \"name\": \"{{NTP2}}\",\n            \"preferred\": \"no\"\n        },\n    \"children\": [\n         {\n        \"datetimeRsNtpProvToEpg\": {\n            \"attributes\": {\n                \"tDn\": \"uni/tn-mgmt/mgmtp-default/oob-default\"\n                          }\n            }\n        }\n    ]\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Set NTP Pod Policy Group",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/fabric/funcprof/podpgrp-pod-policy.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fabricPodPGrp\": {\n            \"attributes\": {\n            \"descr\": \"\",\n            \"dn\": \"uni/fabric/funcprof/podpgrp-pod-policy\",\n            \"name\": \"pod-policy\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\"\n        },\n        \"children\": [\n            {\n                 \"fabricRsTimePol\": {\n                    \"attributes\": {\n                        \"tnDatetimePolName\": \"NTP-Policy\"\n                    }\n                }\n            }\n        ]\n    }\n}\n"
+						},
+						"description": "This creates a new Policy Group accepting all default policy values"
+					},
+					"response": []
+				},
+				{
+					"name": "Set Pod Profile",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/fabric/podprof-pod1.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fabricPodP\": {\n        \"attributes\": {\n            \"descr\": \"\",\n            \"dn\": \"uni/fabric/podprof-pod1\",\n            \"name\": \"pod1\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\"\n        },\n        \"children\": [\n            {\n                \"fabricPodS\": {\n                    \"attributes\": {\n                        \"descr\": \"\",\n                        \"name\": \"default\",\n                        \"ownerKey\": \"\",\n                        \"ownerTag\": \"\",\n                        \"type\": \"ALL\"\n                    },\n                    \"children\": [\n                        {\n                            \"fabricRsPodPGrp\": {\n                                \"attributes\": {\n                                    \"tDn\": \"uni/fabric/funcprof/podpgrp-pod-policy\"\n                                }\n                            }\n                        }\n                    ]\n                }\n            }\n        ]\n    }\n}"
+						},
+						"description": "Creates a new Pod Profile than sets the policy group value"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2 - DNS Setup",
+			"description": "",
+			"item": [
+				{
+					"name": "Set DNS Defaults",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"var dnsValue = postman.getEnvironmentVariable(\"DNS2\");",
+									"",
+									"if (responseCode.code === 200) {",
+									"    if (dnsValue === \"\") {",
+									"        postman.setNextRequest(null);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/fabric/dnsp-default.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dnsProfile\": {\n        \"attributes\": {\n            \"IPVerPreference\": \"IPv4\",\n            \"descr\": \"\",\n            \"dn\": \"uni/fabric/dnsp-default\",\n            \"name\": \"default\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\"\n        },\n        \"children\": [\n            {\n                \"dnsRsProfileToEpg\": {\n                    \"attributes\": {\n                        \"tDn\": \"uni/tn-mgmt/mgmtp-default/oob-default\"\n                    }\n                }\n            },\n            {\n                \"dnsProv\": {\n                    \"attributes\": {\n                        \"addr\": \"{{DNS1}}\",\n                        \"name\": \"\",\n                        \"preferred\": \"yes\"\n                    }\n                }\n            },\n            {\n                \"dnsDomain\": {\n                    \"attributes\": {\n                        \"descr\": \"\",\n                        \"isDefault\": \"yes\",\n                        \"name\": \"cisco.com\"\n                    }\n                }\n            }\n        ]\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Set DNS Secondary",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/fabric/dnsp-default.json",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dnsProv\": {\n        \"attributes\": {\n            \"addr\": \"{{DNS2}}\",\n            \"name\": \"\",\n            \"preferred\": \"no\"\n        }\n    }\n}"
+						},
+						"description": "Calls DNS2 variable to set a secondary server"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3 - Firmware",
+			"description": "",
+			"item": []
+		},
+		{
+			"name": "4 - Access Interface Policies",
+			"description": "",
+			"item": [
+				{
+					"name": "Create LACP MacPin",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lacpLagPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lacplagp-PortChannel_MACPIN\",\n      \"ctrl\": \"fast-sel-hot-stdby,graceful-conv,susp-individual\",\n      \"name\": \"PortChannel_MACPIN\",\n      \"mode\": \"mac-pin\",\n      \"rn\": \"lacplagp-PortChannel_MACPIN\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}\n\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create LACP Passive Policy",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lacpLagPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lacplagp-PortChannel-LACP-PASSIVE\",\n      \"ctrl\": \"fast-sel-hot-stdby,graceful-conv,susp-individual\",\n      \"name\": \"PortChannel-LACP-PASSIVE\",\n      \"mode\": \"passive\",\n      \"rn\": \"lacplagp-PortChannel-LACP-PASSIVE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create LACP Active Policy",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lacpLagPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lacplagp-PortChannel-LACP-ACTIVE\",\n      \"ctrl\": \"fast-sel-hot-stdby,graceful-conv,susp-individual\",\n      \"name\": \"PortChannel-LACP-ACTIVE\",\n      \"mode\": \"active\",\n      \"rn\": \"lacplagp-PortChannel-LACP-ACTIVE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create LLDP OFF Policy",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lldpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lldpIfP-LLDP_Off\",\n      \"name\": \"LLDP_Off\",\n      \"adminRxSt\": \"disabled\",\n      \"adminTxSt\": \"disabled\",\n      \"rn\": \"lldpIfP-LLDP_Off\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create LLDP On Policy",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lldpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lldpIfP-LLDP_ON\",\n      \"name\": \"LLDP_ON\",\n      \"rn\": \"lldpIfP-LDPP_ON\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create CDP Off Policy",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cdpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/cdpIfP-CDP_OFF\",\n      \"name\": \"CDP_OFF\",\n      \"adminSt\": \"disabled\",\n      \"rn\": \"cdpIfP-CDP_OFF\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create CDP On Policy",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cdpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/cdpIfP-CDP_ON\",\n      \"name\": \"CDP_ON\",\n      \"rn\": \"cdpIfP-CDP_ON\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create 10GE Link Policy",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/infra/hintfpol-10GE-Link-Policy.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fabricHIfPol\": {\n        \"attributes\": {\n            \"autoNeg\": \"off\",\n            \"descr\": \"\",\n            \"dn\": \"uni/infra/hintfpol-10GE-Link-Policy\",\n            \"fecMode\": \"inherit\",\n            \"linkDebounce\": \"100\",\n            \"name\": \"10GE-Link-Policy\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\",\n            \"speed\": \"10G\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create 1GE Link Policy",
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/infra/hintfpol-1GE-Link-Policy.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fabricHIfPol\": {\n        \"attributes\": {\n            \"autoNeg\": \"off\",\n            \"descr\": \"\",\n            \"dn\": \"uni/infra/hintfpol-1GE-Link-Policy\",\n            \"fecMode\": \"inherit\",\n            \"linkDebounce\": \"100\",\n            \"name\": \"1GE-Link-Policy\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\",\n            \"speed\": \"1G\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "VMM Domain",
+			"description": "",
+			"item": [
+				{
+					"name": "Set VMM VLAN Pool",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.clearEnvironmentVariable(\"vlan-range-low\");",
+									"postman.clearEnvironmentVariable(\"vlan-range-high\");"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var vrng = postman.getEnvironmentVariable(\"VLAN-POOL\");",
+									"var vlanLow = vrng.substring(0,vrng.search(\"-\"));",
+									"var vlanHigh = vrng.substring(vrng.search(\"-\")+1,vrng.length);",
+									"postman.setEnvironmentVariable(\"vlan-range-low\",vlanLow);",
+									"postman.setEnvironmentVariable(\"vlan-range-high\",vlanHigh);",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://{{URL}}/api/node/mo/uni/infra/vlanns-[VMM-Pool]-dynamic.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fvnsVlanInstP\": {\n        \"attributes\": {\n            \"allocMode\": \"dynamic\",\n            \"descr\": \"VLAN pool for VMware vCenter Domain\",\n            \"dn\": \"uni/infra/vlanns-[VMM-Pool]-dynamic\",\n            \"name\": \"VMM-Pool\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\"\n        },\n        \"children\": [\n            {\n                \"fvnsEncapBlk\": {\n                    \"attributes\": {\n                        \"allocMode\": \"dynamic\",\n                        \"descr\": \"\",\n                        \"from\": \"vlan-{{vlan-range-low}}\",\n                        \"name\": \"\",\n                        \"to\": \"vlan-{{vlan-range-high}}\"\n                    }\n                }\n            }\n        ]\n    }\n}"
+						},
+						"description": "This function will parse the VMM Pool environment variable to apply against a VLAN pool creation"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ACI Login",
+			"request": {
+				"url": "https://{{URL}}/api/aaaLogin.xml",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<aaaUser name={{USERNAME}} pwd={{PASSWORD}} />"
+				},
+				"description": "ACI Login to fabric using environment variables\nURL , USERNAME, PASSWORD"
+			},
+			"response": [
+				{
+					"id": "79511eb8-ebe4-42cf-a678-f4d4593b3c4d",
+					"name": "ACI_Login_200",
+					"originalRequest": {
+						"url": "https://{{URL}}/api/aaaLogin.xml",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<aaaUser name={{USERNAME}} pwd={{PASSWORD}} />"
+						},
+						"description": "ACI Login to fabric using environment variables\nURL , USERNAME, PASSWORD"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Origin, X-Requested-With, Content-Type, Accept, devcookie, APIC-challenge",
+							"name": "Access-Control-Allow-Headers",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST,GET,OPTIONS,DELETE",
+							"name": "Access-Control-Allow-Methods",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "http://127.0.0.1:8000",
+							"name": "Access-Control-Allow-Origin",
+							"description": ""
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store",
+							"name": "Cache-Control",
+							"description": ""
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"name": "Connection",
+							"description": ""
+						},
+						{
+							"key": "Content-Length",
+							"value": "12843",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 19 Oct 2016 18:11:55 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache",
+							"name": "Pragma",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "-/-",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "APIC-cookie=VoVJC/GFy5KoDVO+GyuEQIjemNLXyLYbCWfQJUbD3Ej7FBC5jFgsaVPIctUslBqY3OI9Sa17WvBwH0muoLW0rXyEfATS27Q8njq8qT1wp8+Ta3ANQzR0JUQ+87fy/9dVlB2XmmhlCKgnwVE5oJbjgXSX9Hib3iDvzRWgoWZgcquJxjnMnPBbstOnYkWa/HCBoSUtaedYJY76ZTeGyqlx70VlJXMUYNfGeiYVIc6Y1lFdpyFwj9dre9NJfkoMtNMbFKg+XpweUAdT0JfaAEEwX/hATVdySaFl0grgfHwT9YE7/F2DGwpyL/bQA/oLSTqMJpoaSAu71aOvt9V73D+/tOPypDqK+w0bVcn6V9l4ipEegensWPaia82JsEYrEYoW; path=/; HttpOnly; HttpOnly; Secure",
+							"name": "Set-Cookie",
+							"description": ""
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubdomains",
+							"name": "Strict-Transport-Security",
+							"description": ""
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 02:14:07 GMT-0800 (PST)",
+							"httpOnly": true,
+							"domain": "10.93.152.5",
+							"path": "/",
+							"secure": true,
+							"value": "VoVJC/GFy5KoDVO+GyuEQIjemNLXyLYbCWfQJUbD3Ej7FBC5jFgsaVPIctUslBqY3OI9Sa17WvBwH0muoLW0rXyEfATS27Q8njq8qT1wp8+Ta3ANQzR0JUQ+87fy/9dVlB2XmmhlCKgnwVE5oJbjgXSX9Hib3iDvzRWgoWZgcquJxjnMnPBbstOnYkWa/HCBoSUtaedYJY76ZTeGyqlx70VlJXMUYNfGeiYVIc6Y1lFdpyFwj9dre9NJfkoMtNMbFKg+XpweUAdT0JfaAEEwX/hATVdySaFl0grgfHwT9YE7/F2DGwpyL/bQA/oLSTqMJpoaSAu71aOvt9V73D+/tOPypDqK+w0bVcn6V9l4ipEegensWPaia82JsEYrEYoW",
+							"key": "APIC-cookie"
+						}
+					],
+					"responseTime": "180",
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><imdata totalCount=\"1\">\n<aaaLogin token=\"VoVJC/GFy5KoDVO+GyuEQIjemNLXyLYbCWfQJUbD3Ej7FBC5jFgsaVPIctUslBqY3OI9Sa17WvBwH0muoLW0rXyEfATS27Q8njq8qT1wp8+Ta3ANQzR0JUQ+87fy/9dVlB2XmmhlCKgnwVE5oJbjgXSX9Hib3iDvzRWgoWZgcquJxjnMnPBbstOnYkWa/HCBoSUtaedYJY76ZTeGyqlx70VlJXMUYNfGeiYVIc6Y1lFdpyFwj9dre9NJfkoMtNMbFKg+XpweUAdT0JfaAEEwX/hATVdySaFl0grgfHwT9YE7/F2DGwpyL/bQA/oLSTqMJpoaSAu71aOvt9V73D+/tOPypDqK+w0bVcn6V9l4ipEegensWPaia82JsEYrEYoW\" siteFingerprint=\"MIghtH0ARXrqHK6d\" refreshTimeoutSeconds=\"600\" maximumLifetimeSeconds=\"86400\" guiIdleTimeoutSeconds=\"1200\" restTimeoutSeconds=\"90\" creationTime=\"1476900715\" firstLoginTime=\"1476900715\" userName=\"robermur\" remoteUser=\"false\" unixUserId=\"8218\" sessionId=\"Yt28ZIcUSVqsmLjdHumMEQ==\" lastName=\"Murphy\" firstName=\"Robert\" version=\"2.1(1h)\" buildTime=\"Sat Oct 01 09:58:39 PDT 2016\" node=\"topology/pod-1/node-1\">\n<aaaUserDomain name=\"all\" rolesR=\"admin,aaa,vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,nw-svc-params,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\" rolesW=\"admin,aaa,vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,nw-svc-params,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\">\n<aaaReadRoles/>\n<aaaWriteRoles>\n<role name=\"aaa\"/>\n<role name=\"fabric-admin\"/>\n<role name=\"tenant-ext-admin\"/>\n<role name=\"vmm-admin\"/>\n<role name=\"ops\"/>\n<role name=\"read-all\"/>\n<role name=\"admin\"/>\n<role name=\"nw-svc-admin\"/>\n<role name=\"access-admin\"/>\n<role name=\"nw-svc-params\"/>\n<role name=\"tenant-admin\"/>\n</aaaWriteRoles>\n</aaaUserDomain>\n<aaaUserDomain name=\"common\" rolesR=\"vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\" rolesW=\"\">\n<aaaReadRoles>\n<role name=\"read-all\"/>\n</aaaReadRoles>\n<aaaWriteRoles/>\n</aaaUserDomain>\n<DnDomainMapEntry dn=\"uni/tn-common\" readPrivileges=\"admin,aaa,vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,nw-svc-params,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\" writePrivileges=\"admin,aaa,vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,nw-svc-params,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\"/>\n<DnDomainMapEntry dn=\"uni/tn-infra\" readPrivileges=\"admin,aaa,vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,nw-svc-params,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\" writePrivileges=\"admin,aaa,vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,nw-svc-params,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\"/>\n<DnDomainMapEntry dn=\"uni/tn-mgmt\" readPrivileges=\"admin,aaa,vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,nw-svc-params,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\" writePrivileges=\"admin,aaa,vmm-connectivity,vmm-security,vmm-policy,vmm-ep,vmm-protocol-ops,tenant-qos,tenant-security,tenant-network-profile,tenant-epg,tenant-connectivity-l1,tenant-connectivity-l2,tenant-connectivity-l3,tenant-connectivity-mgmt,tenant-connectivity-util,tenant-protocol-l1,tenant-protocol-l2,tenant-protocol-l3,tenant-protocol-mgmt,tenant-protocol-util,tenant-protocol-ops,tenant-ext-connectivity-l1,tenant-ext-connectivity-l2,tenant-ext-connectivity-l3,tenant-ext-connectivity-mgmt,tenant-ext-connectivity-util,tenant-ext-protocol-l1,tenant-ext-protocol-l2,tenant-ext-protocol-l3,tenant-ext-protocol-mgmt,tenant-ext-protocol-util,fabric-connectivity-l1,fabric-connectivity-l2,fabric-connectivity-l3,fabric-connectivity-mgmt,fabric-connectivity-util,fabric-protocol-l1,fabric-protocol-l2,fabric-protocol-l3,fabric-protocol-mgmt,fabric-protocol-util,fabric-protocol-ops,fabric-equipment,access-connectivity-l1,access-connectivity-l2,access-connectivity-l3,access-connectivity-mgmt,access-connectivity-util,access-protocol-l1,access-protocol-l2,access-protocol-l3,access-protocol-mgmt,access-protocol-util,access-protocol-ops,access-equipment,access-qos,nw-svc-params,ops,nw-svc-devshare,nw-svc-policy,nw-svc-device\"/>\n<ReadOnlySubtrees count=\"1\" description=\"List of subtree DNs derived from RBAC domains assigned to this user (domain 'all' privileges do not require RBAC rules to grant access and are not shown below)\">\n<RbacRule subtreeDn=\"uni/tn-common\" domain=\"common\"/>\n</ReadOnlySubtrees>\n</aaaLogin></imdata>"
+				}
+			]
+		},
+		{
+			"name": "Sandbox",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var vrng = postman.getEnvironmentVariable(\"VLAN-POOL\");",
+							"var vlanA = vrng.substring(0,vrng.search(\"-\"));",
+							"var vlanB = vrng.substring(vrng.search(\"-\")+1,vrng.length);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": " https://{{URL}}/api/aaaLogin.xml",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<aaaUser name=\"{{USERNAME}}\" pwd=\"{{PASSWORD}}\" />"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
